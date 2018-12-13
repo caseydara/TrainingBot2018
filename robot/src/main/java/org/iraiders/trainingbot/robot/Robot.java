@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.iraiders.trainingbot.robot.commands.ExampleCommand;
+import org.iraiders.trainingbot.robot.commands.TimerCommand;
+import org.iraiders.trainingbot.robot.commands.XboxCommand;
+import org.iraiders.trainingbot.robot.subsystems.DriveSubsystem;
 import org.iraiders.trainingbot.robot.subsystems.ExampleSubsystem;
 
 /**
@@ -21,6 +24,11 @@ public class Robot extends IterativeRobot {
 
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
+  DriveSubsystem drive = new DriveSubsystem();
+  TimerCommand testRun = new TimerCommand("testOne", 5, drive);
+  Command xbc = new XboxCommand(drive);
+
+
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -89,13 +97,15 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (autonomousCommand != null)
-			autonomousCommand.cancel();
-	}
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
+    if (autonomousCommand != null)
+      autonomousCommand.cancel();
+
+    testRun.start();
+  }
 
 	/**
 	 * This function is called periodically during operator control
@@ -103,7 +113,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-	}
+		if (!xbc.isRunning() && !testRun.isRunning()) xbc.start();
+
+  }
+
 
 	/**
 	 * This function is called periodically during test mode

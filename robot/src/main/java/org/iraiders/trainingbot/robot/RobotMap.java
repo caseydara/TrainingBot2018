@@ -7,7 +7,11 @@ package org.iraiders.trainingbot.robot;
  * floating around.
  */
 public class RobotMap {
-	// For example to map the left and right motors, you could define the
+	public static int frontLeftTalonPort = 1;
+  public static int frontRightTalonPort = 2;
+  public static int backLeftTalonPort = 3;
+  public static int backRightTalonPort = 4;
+  // For example to map the left and right motors, you could define the
 	// following variables to use with your drivetrain subsystem.
 	// public static int leftMotor = 1;
 	// public static int rightMotor = 2;
